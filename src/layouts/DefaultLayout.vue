@@ -12,7 +12,6 @@
 
 <script>
 import navbar from "@/components/navbar";
-
 export default {
   name: "app",
   props: {

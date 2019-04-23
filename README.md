@@ -27,3 +27,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### NOTE
+Disabled opacity @ main.css body.is-navPanel-visible #wrapper

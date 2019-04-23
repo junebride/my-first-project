@@ -11,17 +11,18 @@
               type="email"
               name="demo-email"
               id="demo-email"
-              value=""
+              value
               placeholder="Email"
             />
           </div>
-          <!-- Break -->
           <div class="col-12">
             <ul class="actions">
               <li>
                 <input type="submit" value="Send Message" class="primary" />
               </li>
-              <li><input type="reset" value="Reset" /></li>
+              <li>
+                <input type="reset" value="Reset" />
+              </li>
             </ul>
           </div>
         </div>
@@ -39,7 +40,6 @@ export default {
     return {};
   },
   mounted() {
-    $("#wrapper").css({ height: "100vh" });
     $("#navPanelToggle").css({ display: "none" });
   },
   components: { "the-eye": theEye }
@@ -52,6 +52,6 @@ export default {
 }
 
 .container {
-  padding: 8rem 4rem 6rem 4rem;
+  margin-top: 15em;
 }
 </style>

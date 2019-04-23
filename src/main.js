@@ -10,6 +10,7 @@ Vue.component("default-layout", defaultLayout);
 Vue.component("blank-layout", blankLayout);
 
 window.$ = window.jQuery = require("jquery");
+require("./assets/panel.js");
 
 Vue.config.productionTip = false;
 

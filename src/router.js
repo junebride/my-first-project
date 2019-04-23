@@ -24,7 +24,14 @@ export default new Router({
     },
     {
       path: "/registration",
+      name: "registration",
+      meta: { layout: "blank-layout" },
       component: Registration
+    },
+    {
+      path: "*",
+      meta: { layout: "default-layout" },
+      component: Home
     }
   ]
 

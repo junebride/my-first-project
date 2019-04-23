@@ -107,9 +107,9 @@
   // Nav Panel.
 
   // Toggle.
-  $navPanelToggle = $(
-    '<a href="#navPanel" id="navPanelToggle">Menu</a>'
-  ).appendTo($wrapper);
+  //   $navPanelToggle = $(
+  //     '<a href="#navPanel" id="navPanelToggle">Menu</a>'
+  //   ).appendTo($wrapper);
 
   // Change toggle styling once we've scrolled past the header.
   $header.scrollex({
@@ -123,46 +123,57 @@
   });
 
   // Panel.
-  $navPanel = $(
-    '<div id="navPanel">' +
-      "<nav>" +
-      "</nav>" +
-      '<a href="#navPanel" class="close"></a>' +
-      "</div>"
-  )
-    .appendTo($body)
-    .panel({
-      delay: 500,
-      hideOnClick: true,
-      hideOnSwipe: true,
-      resetScroll: true,
-      resetForms: true,
-      side: "right",
-      target: $body,
-      visibleClass: "is-navPanel-visible"
-    });
+  //   $navPanel = $(
+  //     '<div id="navPanel">' +
+  //       "<nav>" +
+  //       "</nav>" +
+  //       '<a href="#navPanel" class="close"></a>' +
+  //       "</div>"
+  //   )
+  //     .appendTo($body)
+  //     .panel({
+  //       delay: 500,
+  //       hideOnClick: true,
+  //       hideOnSwipe: true,
+  //       resetScroll: true,
+  //       resetForms: true,
+  //       side: "right",
+  //       target: $body,
+  //       visibleClass: "is-navPanel-visible"
+  //     });
 
-  // Get inner.
-  $navPanelInner = $navPanel.children("nav");
+  // $navPanel = $("#navPanel").panel({
+  // 	delay: 500,
+  // 	hideOnClick: true,
+  // 	hideOnSwipe: true,
+  // 	resetScroll: true,
+  // 	resetForms: true,
+  // 	side: "right",
+  // 	target: $body,
+  // 	visibleClass: "is-navPanel-visible"
+  // });
 
-  // Move nav content on breakpoint change.
-  var $navContent = $nav.children();
+  //   // Get inner.
+  //   $navPanelInner = $navPanel.children("nav");
 
-  breakpoints.on(">medium", function() {
-    // NavPanel -> Nav.
-    $navContent.appendTo($nav);
+  //   // Move nav content on breakpoint change.
+  //   var $navContent = $nav.children();
 
-    // Flip icon classes.
-    $nav.find(".icons, .icon").removeClass("alt");
-  });
+  //   breakpoints.on(">medium", function() {
+  //     // NavPanel -> Nav.
+  //     $navContent.appendTo($nav);
 
-  breakpoints.on("<=medium", function() {
-    // Nav -> NavPanel.
-    $navContent.appendTo($navPanelInner);
+  //     // Flip icon classes.
+  //     $nav.find(".icons, .icon").removeClass("alt");
+  //   });
 
-    // Flip icon classes.
-    $navPanelInner.find(".icons, .icon").addClass("alt");
-  });
+  //   breakpoints.on("<=medium", function() {
+  //     // Nav -> NavPanel.
+  //     $navContent.appendTo($navPanelInner);
+
+  //     // Flip icon classes.
+  //     $navPanelInner.find(".icons, .icon").addClass("alt");
+  //   });
 
   // Hack: Disable transitions on WP.
   if (browser.os == "wp" && browser.osVersion < 10)

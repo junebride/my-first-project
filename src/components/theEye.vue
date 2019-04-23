@@ -1,51 +1,172 @@
 <template>
-  <img ref="theEye" alt="Vue logo" src="../assets/logo.png" />
+  <div class="eye">
+    <div class="shut">
+      <span></span>
+      <div class="ball"></div>
+    </div>
+  </div>
 </template>
 
 <script>
-import { setTimeout } from "timers";
+import { setInterval, setTimeout, clearInterval } from "timers";
 export default {
   name: "HelloWorld",
   data() {
-    return { isLooking: true };
+    return { blinkInterval: null, bool_Looking: false };
   },
   props: {
     interactive: Boolean
   },
   mounted() {
-    if (!/Mobi|Android/i.test(navigator.userAgent)) {
-      setTimeout(() => {
-        $("html").on("mousemove", this.imageFollowMouse);
-      }, 3000);
-    }
+    const _this = this;
+
+    setTimeout(function() {
+      _this.eyefullopen();
+      _this.initEye();
+
+      if (!/Mobi|Android/i.test(navigator.userAgent)) {
+        setTimeout(function() {
+          $(document).on("mousemove", _this.eyemove);
+        }, 2500);
+      }
+    }, 2000);
+
+    window.ondevicemotion = function(e) {
+      console.log(e);
+    };
   },
   methods: {
-    imageFollowMouse(evt) {
-      let img = $(this.$refs.theEye);
-      let offset = img.offset();
+    initEye: function() {
+      const _this = this;
 
-      var center_x = offset.left + img.width() / 2;
-      var center_y = offset.top + img.height() / 2;
-      var mouse_x = evt.pageX;
-      var mouse_y = evt.pageY;
-      var radians = Math.atan2(mouse_x - center_x, mouse_y - center_y);
-      var degree = radians * (180 / Math.PI) * -1;
-      img.css("-moz-transform", "rotate(" + degree + "deg)");
-      img.css("-webkit-transform", "rotate(" + degree + "deg)");
-      img.css("-o-transform", "rotate(" + degree + "deg)");
-      img.css("-ms-transform", "rotate(" + degree + "deg)");
+      _this.blinkInterval = setInterval(function() {
+        $(".shut span").css({ height: "100%", transition: "height 0.5s" });
+        setTimeout(function() {
+          $(".ball").css({
+            width: "40px",
+            height: "40px",
+            borderWidth: "30px",
+            left: "50%",
+            top: "50%",
+            transform: "translate( -50%, -50%)"
+          });
 
-      this.isLooking = degree <= 55 && degree >= -55;
-      $("html")
-        .find("input")
-        .prop("readonly", this.interactive && this.isLooking);
+          _this.bool_Looking = false;
+          _this.toggleInputs();
+        }, 500);
+
+        setTimeout(function() {
+          if (!_this.interactive || _this.bool_Looking) _this.eyefullopen();
+          else _this.eyehalfopen();
+        }, 800);
+      }, 10000);
+    },
+
+    eyehalfopen: function() {
+      $(".shut span").css({ height: "35%", transition: "height 0.5s" });
+    },
+
+    eyefullopen: function() {
+      $(".shut span").css({ height: "0%", transition: "height 0.5s" });
+    },
+
+    eyeballshrink: function() {
+      $(".ball").css({
+        width: "30px",
+        height: "30px",
+        borderWidth: "20px"
+      });
+    },
+
+    eyeclose: function() {
+      $(".shut span").css({ height: "100%", transition: "height 0.5s" });
+    },
+
+    eyemove: function(e) {
+      let x = (e.clientX * 100) / window.innerWidth;
+      let y = 15 + (e.clientY * 100) / window.innerHeight;
+      this.bool_Looking = y >= 65;
+      $(".ball").css({
+        width: "40px",
+        height: "40px",
+        borderWidth: "30px",
+        left: x + "%",
+        top: y + "%",
+        transform: "translate( -" + x + "%, -" + y + "%)"
+      });
+
+      if (this.interactive) this.eyelooking();
+    },
+
+    eyelooking: function() {
+      if (this.bool_Looking) {
+        this.eyefullopen();
+        this.eyeballshrink();
+      } else {
+        this.eyehalfopen();
+      }
+
+      this.toggleInputs();
+    },
+
+    toggleInputs: function() {
+      $("input[type=email]").prop("readonly", this.bool_Looking);
+
+      $("input[type=submit], input[type=reset]").prop(
+        "disabled",
+        this.bool_Looking
+      );
     }
   },
   beforeDestroy() {
-    $("html").off("mousemove", this.imageFollowMouse);
+    $(document).off("mousemove", this.eyemove);
+    clearInterval(this.blinkInterval);
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.eye {
+  width: 200px;
+  height: 200px;
+  background: white;
+  border-radius: 75% 0;
+  transform: translate(-50%, -50%) rotate(45deg);
+  overflow: hidden;
+  margin-left: 50%;
+}
+
+.ball {
+  width: 40px;
+  height: 40px;
+  background: #222f3e;
+  border-radius: 50%;
+  border: 30px solid #ff0000;
+  box-sizing: content-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  transition: width 0s, height 0s, border-width 0s;
+}
+
+.shut {
+  width: 300px;
+  height: 160px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  z-index: 999;
+
+  span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    border-radius: 0 0 60% 60%;
+  }
+}
+</style>
